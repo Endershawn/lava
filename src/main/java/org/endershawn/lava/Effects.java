@@ -84,7 +84,7 @@ public class Effects {
 	}
 	
 	public static void spawnLava(World worldIn, BlockPos p, int rad) {
-		int y = -1;
+		int y = 0;
 		worldIn.setBlockState(p, Blocks.LAVA.getDefaultState());
 		
 		if (rad > 0) {

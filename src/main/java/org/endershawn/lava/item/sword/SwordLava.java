@@ -1,9 +1,9 @@
 package org.endershawn.lava.item.sword;
 
 import org.endershawn.lava.Effects;
-import org.endershawn.lava.LavaMod;
 import org.endershawn.lava.item.ModItems;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +36,14 @@ public class SwordLava extends SwordBase {
 		
 		return super.onBlockStartBreak(itemstack, pos, player);
     }
+	@Override
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		if (canDestroy(state)) {
+			return 15.0F;
+		} else {
+			return super.getDestroySpeed(stack, state);
+		}
+	}
 	
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {

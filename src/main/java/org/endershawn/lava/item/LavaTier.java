@@ -23,9 +23,9 @@ public class LavaTier implements IItemTier {
 	   LavaTier() {
 		  Supplier<Ingredient> i = () -> Ingredient.fromItems(Items.LAVA_BUCKET);
 		  
-	      this.harvestLevel = 3;
+	      this.harvestLevel = 2;
 	      this.maxUses = 700;
-	      this.efficiency = 500;
+	      this.efficiency = 100;
 	      this.attackDamage = 6;
 	      this.enchantability = 30;
 	      this.repairMaterial = new LazyLoadBase<Ingredient>(i);
