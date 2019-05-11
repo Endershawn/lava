@@ -1,0 +1,132 @@
+[11May2019 14:24:05.131] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--gameDir, ., --launchTarget, fmluserdevclient, --fml.mcpVersion, 20190213.203750, --fml.mcVersion, 1.13.2, --fml.forgeGroup, net.minecraftforge, --fml.forgeVersion, 25.0.191, --version, MOD_DEV, --assetIndex, 1.13.1, --assetsDir, /home/someone/.gradle/caches/forge_gradle/assets, --username, Dev, --accessToken, ❄❄❄❄❄❄❄❄, --userProperties, {}]
+[11May2019 14:24:05.136] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher starting: java version 1.8.0_212
+[11May2019 14:24:05.395] [main/INFO] [net.minecraftforge.fml.loading.FixSSL/CORE]: Added Lets Encrypt root certificates as additional trust
+[11May2019 14:24:06.004] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'fmluserdevclient' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/someone/.gradle/caches/forge_gradle/assets, --assetIndex, 1.13.1, --username, Dev, --accessToken, ❄❄❄❄❄❄❄❄, --userProperties, {}]
+[11May2019 14:24:09.127] [Client thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[11May2019 14:24:18.312] [Client thread/WARN] [net.minecraft.client.GameSettings/]: Skipping bad option: lastServer:
+[11May2019 14:24:18.335] [Client thread/INFO] [net.minecraft.client.Minecraft/]: LWJGL Version: 3.1.6 build 14
+[11May2019 14:24:19.082] [Client thread/INFO] [net.minecraftforge.fml.ModLoader/CORE]: Loading Network data for FML net version: FML2
+[11May2019 14:24:19.143] [modloading-worker-2/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 25.0.191, for MC 1.13.2 with MCP 20190213.203750
+[11May2019 14:24:19.143] [modloading-worker-2/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v25.0.191 Initialized
+[11May2019 14:24:19.377] [Client thread/INFO] [org.endershawn.lava.item.ModItems/]: Registering Items
+[11May2019 14:24:19.403] [Thread-1/FATAL] [net.minecraftforge.common.ForgeConfig/CORE]: Forge config just got changed on the file system!
+[11May2019 14:24:19.404] [Thread-1/FATAL] [net.minecraftforge.common.ForgeConfig/CORE]: Forge config just got changed on the file system!
+[11May2019 14:24:19.406] [modloading-worker-1/INFO] [org.endershawn.lava.LavaMod/]: HELLO FROM PREINIT
+[11May2019 14:24:19.544] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json
+[11May2019 14:24:19.602] [Client thread/INFO] [net.minecraft.resources.SimpleReloadableResourceManager/]: Reloading ResourceManager: forge-1.13.2-25.0.191_mapped_snapshot_20180921-1.13-recomp.jar, main, Default
+[11May2019 14:24:20.244] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: BETA_OUTDATED Target: 25.0.194
+[11May2019 14:24:20.291] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager/]: Starting up SoundSystem version 201809301515...
+[11May2019 14:24:20.539] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager/]: Initializing No Sound
+[11May2019 14:24:20.539] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager/]: (Silent Mode)
+[11May2019 14:24:20.654] [Thread-5/INFO] [net.minecraft.client.audio.SoundManager/]: OpenAL initialized.
+[11May2019 14:24:20.903] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager/SOUNDS]: Preloading sound minecraft:sounds/ambient/underwater/underwater_ambience.ogg
+[11May2019 14:24:20.906] [Sound Library Loader/INFO] [net.minecraft.client.audio.SoundManager/SOUNDS]: Sound engine started
+[11May2019 14:24:24.377] [Client thread/INFO] [net.minecraft.client.renderer.texture.TextureMap/]: Max texture size: 16384
+[11May2019 14:24:25.274] [Client thread/INFO] [net.minecraft.client.renderer.texture.TextureMap/]: Created: 512x512 textures-atlas
+[11May2019 14:24:28.336] [Client thread/WARN] [net.minecraft.client.GameSettings/]: Skipping bad option: lastServer:
+[11May2019 14:24:28.528] [Client thread/INFO] [com.mojang.text2speech.NarratorLinux/]: Narrator library successfully loaded
+[11May2019 14:24:28.980] [Realms Notification Availability checker #1/INFO] [com.mojang.realmsclient.client.RealmsClient/]: Could not authorize you against Realms server: Invalid session id
+[11May2019 14:24:32.806] [Client thread/WARN] [net.minecraft.command.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[11May2019 14:24:32.807] [Client thread/WARN] [net.minecraft.command.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[11May2019 14:24:32.808] [Client thread/WARN] [net.minecraft.command.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[11May2019 14:24:32.809] [Client thread/WARN] [net.minecraft.command.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[11May2019 14:24:32.810] [Client thread/WARN] [net.minecraft.command.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[11May2019 14:24:32.940] [Client thread/INFO] [net.minecraft.item.crafting.RecipeManager/]: Loaded 0 recipes
+[11May2019 14:24:32.941] [Client thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 0 advancements
+[11May2019 14:24:32.984] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer/]: Starting integrated minecraft server version 1.13.2
+[11May2019 14:24:32.987] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer/]: Generating keypair
+[11May2019 14:24:33.148] [Thread-1/FATAL] [net.minecraftforge.common.ForgeConfig/CORE]: Forge config just got changed on the file system!
+[11May2019 14:24:33.180] [Server thread/INFO] [net.minecraftforge.registries.GameData/REGISTRIES]: Injecting existing registry data into this SERVER instance
+[11May2019 14:24:33.725] [Server thread/INFO] [net.minecraft.resources.SimpleReloadableResourceManager/]: Reloading ResourceManager: Default, main, forge-1.13.2-25.0.191_mapped_snapshot_20180921-1.13-recomp.jar
+[11May2019 14:24:34.288] [Server thread/INFO] [net.minecraft.item.crafting.RecipeManager/]: Loaded 524 recipes
+[11May2019 14:24:35.159] [Server thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 571 advancements
+[11May2019 14:24:35.564] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[11May2019 14:24:36.193] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 4%
+[11May2019 14:24:36.323] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 8%
+[11May2019 14:24:36.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 12%
+[11May2019 14:24:36.449] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 16%
+[11May2019 14:24:36.486] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 20%
+[11May2019 14:24:36.838] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 24%
+[11May2019 14:24:36.877] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 28%
+[11May2019 14:24:36.901] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:skeleton that already exists with UUID 754e6995-9e50-4b89-8207-11343a583155
+[11May2019 14:24:36.911] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 32%
+[11May2019 14:24:36.942] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 36%
+[11May2019 14:24:36.966] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:creeper that already exists with UUID dc2fbf5b-651d-417b-90b6-850e0325eca7
+[11May2019 14:24:36.976] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 40%
+[11May2019 14:24:37.000] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:wolf that already exists with UUID d5bb4736-de3f-4949-bbf0-ccbea0cc27e3
+[11May2019 14:24:37.009] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:sheep that already exists with UUID c26fc70c-8387-4714-8e90-84d7e33234e6
+[11May2019 14:24:37.015] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 44%
+[11May2019 14:24:37.034] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:chicken that already exists with UUID f26cc31f-f49e-4e74-b232-73b5cfebf9b0
+[11May2019 14:24:37.035] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:chicken that already exists with UUID f994caed-d07f-4c21-9fff-cf40e017ec6f
+[11May2019 14:24:37.062] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 48%
+[11May2019 14:24:37.090] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:wolf that already exists with UUID 5f044e15-d952-47d7-9662-121d7fbef8a6
+[11May2019 14:24:37.091] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:wolf that already exists with UUID 952e8d54-5340-4d04-8d4d-bddc573009d7
+[11May2019 14:24:37.092] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 52%
+[11May2019 14:24:37.126] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 56%
+[11May2019 14:24:37.149] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:skeleton that already exists with UUID b2e11989-e9d2-4b19-99ac-d20e393a57f0
+[11May2019 14:24:37.162] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 60%
+[11May2019 14:24:37.201] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 64%
+[11May2019 14:24:37.221] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:chicken that already exists with UUID beee5c29-7fdd-437c-80b9-d8be8763ff22
+[11May2019 14:24:37.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 68%
+[11May2019 14:24:37.252] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:bat that already exists with UUID b9130381-0949-4e86-9ea7-74c6e44686aa
+[11May2019 14:24:37.263] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:sheep that already exists with UUID 50788710-1db0-4d64-bfdd-ceb48a258610
+[11May2019 14:24:37.264] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:sheep that already exists with UUID 00df0e3e-7eef-4632-ba03-278ad480de44
+[11May2019 14:24:37.264] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:sheep that already exists with UUID 80fcaf7e-8b90-4c68-96d3-538cf537e931
+[11May2019 14:24:37.264] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:sheep that already exists with UUID 3da7082c-21fc-494a-b510-38ca7a5d424b
+[11May2019 14:24:37.264] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:sheep that already exists with UUID c458db71-e71c-4893-a95a-66a0c22eb76b
+[11May2019 14:24:37.270] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 72%
+[11May2019 14:24:37.286] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:zombie that already exists with UUID b75a0460-a17f-48be-b149-1fc161e45415
+[11May2019 14:24:37.313] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 76%
+[11May2019 14:24:37.346] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 80%
+[11May2019 14:24:37.373] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 84%
+[11May2019 14:24:37.380] [Server thread/WARN] [net.minecraft.world.WorldServer/]: Keeping entity minecraft:cow that already exists with UUID 6e1cbec4-51f2-46fb-b613-f0532c65700d
+[11May2019 14:24:37.399] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 88%
+[11May2019 14:24:37.428] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 92%
+[11May2019 14:24:37.462] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 96%
+[11May2019 14:24:37.485] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing spawn area: 100%
+[11May2019 14:24:37.485] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Time elapsed: 1920 ms
+[11May2019 14:24:37.486] [Server thread/INFO] [org.endershawn.lava.LavaMod/]: HELLO from server starting
+[11May2019 14:24:37.967] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer/]: Changing view distance to 12, from 10
+[11May2019 14:24:39.955] [Netty Local Client IO #0/INFO] [net.minecraftforge.fml.network.NetworkHooks/]: Connected to a modded server.
+[11May2019 14:24:40.206] [Server thread/INFO] [net.minecraft.server.management.PlayerList/]: Dev[local:E:db3c7f28] logged in with entity id 458 at (-95.74624588211626, 71.0, 6.815205698604402)
+[11May2019 14:24:40.239] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[11May2019 14:24:43.670] [pool-5-thread-1/WARN] [com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService/]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@680692ac[id=380df991-f603-344c-a090-369bad2a924a,name=Dev,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationException: The client has sent too many requests within a certain amount of time
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:79) ~[authlib-1.5.25.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:180) ~[authlib-1.5.25.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:60) ~[authlib-1.5.25.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:57) ~[authlib-1.5.25.jar:?]
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3716) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2424) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2298) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2211) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4154) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:4158) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:5147) ~[guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:5153) ~[guava-21.0.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:170) ~[authlib-1.5.25.jar:?]
+	at net.minecraft.client.Minecraft.getProfileProperties(Minecraft.java:1909) ~[?:?]
+	at net.minecraft.client.resources.SkinManager.lambda$loadProfileTextures$1(SkinManager.java:111) ~[?:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_212]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_212]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_212]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_212]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_212]
+[11May2019 14:24:46.141] [Client thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 7 advancements
+[11May2019 14:24:46.246] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 6226ms or 124 ticks behind
+[11May2019 14:24:46.246] [Server thread/INFO] [net.minecraft.server.integrated.IntegratedServer/]: Saving and pausing game...
+[11May2019 14:24:46.256] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'New World'/minecraft:overworld
+[11May2019 14:25:00.767] [Client thread/INFO] [org.endershawn.lava.LavaMod/]: Attempting to break harvestlevel: 0
+[11May2019 14:25:00.795] [Server thread/INFO] [org.endershawn.lava.LavaMod/]: Attempting to break harvestlevel: 0
+[11May2019 14:25:12.440] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 11220ms or 224 ticks behind
+[11May2019 14:25:40.585] [Client thread/INFO] [org.endershawn.lava.LavaMod/]: Attempting to break harvestlevel: 0
+[11May2019 14:25:40.620] [Server thread/INFO] [org.endershawn.lava.LavaMod/]: Attempting to break harvestlevel: 0
+[11May2019 14:25:43.328] [Client thread/INFO] [org.endershawn.lava.LavaMod/]: Attempting to break harvestlevel: 0
+[11May2019 14:25:43.371] [Server thread/INFO] [org.endershawn.lava.LavaMod/]: Attempting to break harvestlevel: 0
+[11May2019 14:25:43.894] [Client thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 24 advancements
+[11May2019 14:25:44.380] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev burned to death
+[11May2019 14:25:44.431] [Client thread/INFO] [net.minecraft.client.gui.GuiNewChat/]: [CHAT] Dev burned to death
+[11May2019 14:25:46.766] [Client thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[11May2019 14:25:47.577] [Client thread/INFO] [net.minecraft.client.audio.SoundManager/]: SoundSystem shutting down...
+[11May2019 14:25:47.779] [Client thread/INFO] [net.minecraft.client.audio.SoundManager/]: SoundSystem Author: Paul Lamb, www.paulscode.com
+[11May2019 14:25:47.798] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 18480272ms or 369605 ticks behind
