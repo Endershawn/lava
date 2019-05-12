@@ -3,6 +3,10 @@ package org.endershawn.lava;
 import java.util.List;
 import java.util.Random;
 
+import org.endershawn.lava.item.LavaTier;
+import org.endershawn.lava.item.sword.HammerFire;
+import org.endershawn.lava.item.sword.SwordLava;
+
 //import org.endershawn.lava.entity.SuperFireball;
 
 import net.minecraft.block.state.IBlockState;
@@ -12,15 +16,25 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemTiered;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.WeightedRandom.Item;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
-public class Effects {	
+public class Effects {
+	private static int TICKS = 20;
+	
 	public static interface IAffectEntity {
 		public void affect(Entity e);
 	}
@@ -123,5 +137,49 @@ public class Effects {
 			e.attackEntityFrom(DamageSource.LIGHTNING_BOLT, size * 2);
 		}
 	}
+	
+	@Mod.EventBusSubscriber
+    public static class EffectHandler {
+		private static final int EFFECT_DURATION = 2 * TICKS;
+		
+		private static void addFireResistance(EntityPlayer p) {
+			p.addPotionEffect(new PotionEffect(
+					MobEffects.FIRE_RESISTANCE, EFFECT_DURATION + TICKS, 100));
+		}
+		
+		private static boolean isLava(net.minecraft.item.Item i) {
+    		if (i instanceof ItemTiered) {
+    			ItemTiered it = (ItemTiered)i;
+    			return (it.getTier() instanceof LavaTier);
+    		}
+    		
+    		return false;
+		}
+		
+		@SubscribeEvent
+		public static void playerTick(PlayerTickEvent event) {    	
+			if (event.player.world.getGameTime() % EFFECT_DURATION > 0) {
+				return;
+			}
+			
+			net.minecraft.item.Item heldItem = event.player.getHeldItemMainhand().getItem();
+			
+    		if (isLava(heldItem)) {
+    			addFireResistance(event.player);
+    		}
+    		
+		}
+
+		@SubscribeEvent
+		public static void equipChange(LivingEquipmentChangeEvent event) {
+			net.minecraft.item.Item item = event.getTo().getItem();
+
+			if (event.getEntity() instanceof EntityPlayer) {				
+				if (isLava(item)) {
+					addFireResistance((EntityPlayer)event.getEntity());
+				}
+			}
+		}
+    }
 
 }

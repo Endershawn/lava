@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Logger;
 //import org.endershawn.lava.item.sword.SwordLava;
 //import org.endershawn.lava.item.sword.SwordThunder;
 import org.endershawn.lava.LavaMod;
+import org.endershawn.lava.item.sword.HammerFire;
+import org.endershawn.lava.item.sword.Sithe;
 import org.endershawn.lava.item.sword.SwordLava;
 import org.endershawn.lava.item.sword.SwordThunder;
 
@@ -45,7 +47,9 @@ public class ModItems {
     	LOGGER.info("Registering Items");
         event.getRegistry().registerAll(
         		new SwordThunder(),
-        		new SwordLava()
+        		new SwordLava(),
+        		new HammerFire(),
+        		new Sithe()
 		);
     }
 	
