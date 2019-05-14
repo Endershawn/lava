@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.endershawn.lava.item.LavaTier;
-import org.endershawn.lava.item.sword.HammerFire;
-import org.endershawn.lava.item.sword.SwordLava;
+import org.endershawn.lava.item.armor.ArmorMaterialLava;
 
 //import org.endershawn.lava.entity.SuperFireball;
 
@@ -17,12 +16,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemTiered;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
-import net.minecraft.util.WeightedRandom.Item;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -138,6 +138,37 @@ public class Effects {
 		}
 	}
 	
+	private static boolean isLava(net.minecraft.item.Item i) {
+		if (i instanceof ItemTiered) {
+			ItemTiered it = (ItemTiered)i;
+			return (it.getTier() instanceof LavaTier);
+		}
+		
+		if (i instanceof ItemArmor) {
+			ItemArmor ia = (ItemArmor)i;
+			return (ia.getArmorMaterial() instanceof ArmorMaterialLava);
+		}
+		
+		return false;
+	}
+	
+	private static boolean holdingLava(EntityPlayer p) {
+		return isLava(p.getHeldItemMainhand().getItem()) || isLava(p.getHeldItemOffhand().getItem());
+	}
+	
+	private static boolean wearingLava(EntityPlayer p) {
+		for (EntityEquipmentSlot slot: EntityEquipmentSlot.values() ) {
+			if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+				net.minecraft.item.Item i = p.getItemStackFromSlot(slot).getItem();
+				if (!isLava(i)) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	@Mod.EventBusSubscriber
     public static class EffectHandler {
 		private static final int EFFECT_DURATION = 2 * TICKS;
@@ -145,15 +176,8 @@ public class Effects {
 		private static void addFireResistance(EntityPlayer p) {
 			p.addPotionEffect(new PotionEffect(
 					MobEffects.FIRE_RESISTANCE, EFFECT_DURATION + TICKS, 100));
-		}
-		
-		private static boolean isLava(net.minecraft.item.Item i) {
-    		if (i instanceof ItemTiered) {
-    			ItemTiered it = (ItemTiered)i;
-    			return (it.getTier() instanceof LavaTier);
-    		}
-    		
-    		return false;
+			p.extinguish();
+
 		}
 		
 		@SubscribeEvent
@@ -162,21 +186,32 @@ public class Effects {
 				return;
 			}
 			
-			net.minecraft.item.Item heldItem = event.player.getHeldItemMainhand().getItem();
+			//net.minecraft.item.Item heldItem = event.player.getHeldItemMainhand().getItem();
 			
-    		if (isLava(heldItem)) {
-    			addFireResistance(event.player);
-    		}
+			if (wearingLava(event.player)) {
+				addFireResistance(event.player);
+			}
+			
+//    		if (isLava(heldItem)) {
+//    			addFireResistance(event.player);
+//    		}
     		
 		}
 
 		@SubscribeEvent
 		public static void equipChange(LivingEquipmentChangeEvent event) {
-			net.minecraft.item.Item item = event.getTo().getItem();
+			//net.minecraft.item.Item item = event.getTo().getItem();
 
-			if (event.getEntity() instanceof EntityPlayer) {				
-				if (isLava(item)) {
-					addFireResistance((EntityPlayer)event.getEntity());
+			if (event.getEntity() instanceof EntityPlayer) {	
+				EntityPlayer p = (EntityPlayer)event.getEntity();
+				//net.minecraft.item.Item heldItem = p.getHeldItemMainhand().getItem();
+				
+//				if (holdingLava(p)) {
+//					addFireResistance(p);
+//				}
+				
+				if (wearingLava(p)) {
+					addFireResistance(p);
 				}
 			}
 		}
