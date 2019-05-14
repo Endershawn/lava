@@ -36,7 +36,7 @@ public class HammerFire extends SwordBase {
 		EnumFacing facing = player.getHorizontalFacing();
 		
 		Effects.burnBlocks(worldIn, pos, facing, BLAST_SIZE, TEMPERATURE);
-		
+		//vertically 
 //		List<Entity> entities = Effects.scanForEntites(worldIn, new Vec3d(pos), (float)BLAST_SIZE);
 //		for (Entity ent: entities) {
 //			Effects.affectEntity(ent, new IAffectEntity() {
@@ -56,10 +56,7 @@ public class HammerFire extends SwordBase {
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, 
 							 EntityLivingBase attacker) {
-//		target.getEntityWorld().createExplosion(
-//				target, target.posX, target.posY, target.posZ, 
-//				BLAST_SIZE, true);
-		
+	
 		if (!target.isImmuneToFire()) {
 			target.setFire(BURN_TIME);
 		}
@@ -70,7 +67,11 @@ public class HammerFire extends SwordBase {
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, 
 			EntityPlayer player, EnumHand handIn) {
 		RayTraceResult rtr = this.rayTrace(worldIn, player, true, REACH_MULT);
-	    Effects.dropFireball(worldIn, rtr.getBlockPos());
+		
+		if (rtr != null && rtr.type != RayTraceResult.Type.MISS) {
+			    Effects.dropFireball(worldIn, rtr.getBlockPos());
+		}
+		
 		return super.onItemRightClick(worldIn, player, handIn);
 	}
 }

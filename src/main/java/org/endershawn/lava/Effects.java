@@ -7,9 +7,8 @@ import org.endershawn.lava.item.LavaTier;
 import org.endershawn.lava.item.armor.ArmorMaterialLava;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockState;
 
-//import org.endershawn.lava.entity.SuperFireball;
+import org.endershawn.lava.entity.EntitySuperFireball;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -46,10 +45,13 @@ public class Effects {
 		a.affect(e);
 	}
 	
-	public static void immolateEntity(EntityLiving target) {
+	public static void immolateEntity(Entity target) {
 		if (!target.isImmuneToFire()) {
 			target.setFire(10);
-			target.setHealth(.1f);
+			
+			if (target instanceof EntityLiving) {
+				((EntityLiving)target).setHealth(.1f);
+			}
 		}
 	}
 	
@@ -84,17 +86,15 @@ public class Effects {
 	    List<Entity> entities = Effects.scanForEntites(worldIn, v, range);
 		
 		for (Entity ent: entities) {
-			if (ent instanceof EntityLiving) {
-				Effects.immolateEntity((EntityLiving) ent);
-			}
+				Effects.immolateEntity(ent);
 		}
 	}
 	
 	public static void dropFireball(World worldIn, BlockPos p) {
-		//	    EntityLargeFireball fb = new SuperFireball(worldIn);
-	    EntityLargeFireball fb = new EntityLargeFireball(worldIn);
+		EntityLargeFireball fb = new EntitySuperFireball(worldIn);
+	    //EntityLargeFireball fb = new EntityLargeFireball(worldIn);
 	    fb.setPosition(p.getX(), worldIn.getActualHeight(), p.getZ());
-	    fb.accelerationY -= .2;
+	    fb.accelerationY -= .3;
 	    worldIn.spawnEntity(fb);
 	}
 	

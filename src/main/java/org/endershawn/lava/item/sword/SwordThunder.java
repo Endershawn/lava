@@ -4,6 +4,7 @@ import org.endershawn.lava.Effects;
 import org.endershawn.lava.item.ModItems;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
@@ -29,6 +30,11 @@ public class SwordThunder extends SwordBase {
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 		super.hitEntity(stack, target, attacker);
+		World worldIn = attacker.getEntityWorld();
+		
+		worldIn.spawnEntity(
+				new EntityLightningBolt(worldIn, target.posX, 
+						                target.posY, target.posZ, true));
 		target.setHealth(0);
 		return true;
 	}
