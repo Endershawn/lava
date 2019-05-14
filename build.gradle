@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.13.2-0.3'
+version = '1.13.2-0.4'
 group = 'org.endershawn.lava' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'lava'
 
