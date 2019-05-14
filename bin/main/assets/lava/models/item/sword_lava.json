@@ -1,6 +1,6 @@
 {
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "lava:items/sword_lava"
+		"layer0": "lava:item/sword_lava"
 	}
 }

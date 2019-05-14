@@ -1,6 +1,6 @@
 ﻿{
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "lava:items/sithe_death"
+		"layer0": "lava:item/sithe_death"
 	}
 }

@@ -7,6 +7,10 @@ import org.apache.logging.log4j.Logger;
 //import org.endershawn.lava.item.sword.SwordLava;
 //import org.endershawn.lava.item.sword.SwordThunder;
 import org.endershawn.lava.LavaMod;
+import org.endershawn.lava.item.armor.ItemLavaBoots;
+import org.endershawn.lava.item.armor.ItemLavaChestplate;
+import org.endershawn.lava.item.armor.ItemLavaHelmet;
+import org.endershawn.lava.item.armor.ItemLavaLeggings;
 import org.endershawn.lava.item.sword.HammerFire;
 import org.endershawn.lava.item.sword.Sithe;
 import org.endershawn.lava.item.sword.SwordLava;
@@ -32,7 +36,11 @@ public class ModItems {
         		new SwordThunder(),
         		new SwordLava(),
         		new HammerFire(),
-        		new Sithe()
+        		new Sithe(),
+        		new ItemLavaChestplate(),
+        		new ItemLavaHelmet(),
+        		new ItemLavaBoots(),
+        		new ItemLavaLeggings()
 		);
     }
 }
