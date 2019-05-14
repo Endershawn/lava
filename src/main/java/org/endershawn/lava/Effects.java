@@ -6,6 +6,9 @@ import java.util.Random;
 import org.endershawn.lava.item.LavaTier;
 import org.endershawn.lava.item.armor.ArmorMaterialLava;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
+
 //import org.endershawn.lava.entity.SuperFireball;
 
 import net.minecraft.block.state.IBlockState;
@@ -58,18 +61,20 @@ public class Effects {
 		Random rand = new Random();
 
 		if (direction.getAxis() == Axis.X) {
-			toPos = toPos.add(0, 0, range);
+			toPos = toPos.add(0, range, range);
 			pos = pos.add(0, 0, -(range));
 		} else {
-			toPos = toPos.add(range, 0, 0);
+			toPos = toPos.add(range, range, 0);
 			pos = pos.add(-(range), 0, 0);
 		}
 		
-		Iterable<BlockPos> leftArea = BlockPos.getAllInBox(
+		Iterable<BlockPos> blocksBox = BlockPos.getAllInBox(
 				pos, toPos.offset(direction, range * 2));
 		
-		for (BlockPos p: leftArea) {
-			if (rand.nextInt(100) < temp) {
+		for (BlockPos p: blocksBox) {
+			Block b = worldIn.getBlockState(p).getBlock();
+			
+			if (rand.nextInt(100) < temp && b != Blocks.AIR) {
 				worldIn.setBlockState(p, fireState);
 			}
 		}
