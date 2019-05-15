@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 
 import org.endershawn.lava.entity.EntitySuperFireball;
 
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -21,6 +22,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemTiered;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -30,13 +32,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class Effects {
 	private static int TICKS = 20;
-	
+	private static final int EFFECT_DURATION = 2 * TICKS;
+	private static final int JUMP_LEVEL = 15;
+
 	public static interface IAffectEntity {
 		public void affect(Entity e);
 	}
@@ -92,7 +97,6 @@ public class Effects {
 	
 	public static void dropFireball(World worldIn, BlockPos p) {
 		EntityLargeFireball fb = new EntitySuperFireball(worldIn);
-	    //EntityLargeFireball fb = new EntityLargeFireball(worldIn);
 	    fb.setPosition(p.getX(), worldIn.getActualHeight(), p.getZ());
 	    fb.accelerationY -= .3;
 	    worldIn.spawnEntity(fb);
@@ -157,10 +161,12 @@ public class Effects {
 		return false;
 	}
 	
+	/** abstract to isHolding(tier) **/
 	private static boolean holdingLava(EntityPlayer p) {
 		return isLava(p.getHeldItemMainhand().getItem()) || isLava(p.getHeldItemOffhand().getItem());
 	}
 	
+	/** abstract to isWearing(armorMaterial) **/
 	private static boolean wearingLava(EntityPlayer p) {
 		for (EntityEquipmentSlot slot: EntityEquipmentSlot.values() ) {
 			if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
@@ -174,27 +180,37 @@ public class Effects {
 		return true;
 	}
 	
+	private static void addEffect(Potion potion, EntityPlayer p) {
+		addEffect(potion, p, 100);
+	}
+	
+	private static void addEffect(Potion potion, EntityPlayer p, int level) {
+		p.addPotionEffect(new PotionEffect(
+				potion, EFFECT_DURATION + TICKS, level));
+	}
+	
+	private static void addFireResistance(EntityPlayer p) {
+		addEffect(MobEffects.FIRE_RESISTANCE, p);
+		p.extinguish();
+
+	}
+	
+	private static void addJumpBoost(EntityPlayer p, int level) {
+		addEffect(MobEffects.JUMP_BOOST, p, level);
+	}
+	
 	@Mod.EventBusSubscriber
     public static class EffectHandler {
-		private static final int EFFECT_DURATION = 2 * TICKS;
-		
-		private static void addFireResistance(EntityPlayer p) {
-			p.addPotionEffect(new PotionEffect(
-					MobEffects.FIRE_RESISTANCE, EFFECT_DURATION + TICKS, 100));
-			p.extinguish();
-
-		}
 		
 		@SubscribeEvent
 		public static void playerTick(PlayerTickEvent event) {    	
 			if (event.player.world.getGameTime() % EFFECT_DURATION > 0) {
 				return;
 			}
-			
-			//net.minecraft.item.Item heldItem = event.player.getHeldItemMainhand().getItem();
-			
+						
 			if (wearingLava(event.player)) {
 				addFireResistance(event.player);
+				addJumpBoost(event.player, JUMP_LEVEL);
 			}
 			
 //    		if (isLava(heldItem)) {
@@ -202,14 +218,12 @@ public class Effects {
 //    		}
     		
 		}
-
+		
 		@SubscribeEvent
 		public static void equipChange(LivingEquipmentChangeEvent event) {
-			//net.minecraft.item.Item item = event.getTo().getItem();
 
 			if (event.getEntity() instanceof EntityPlayer) {	
 				EntityPlayer p = (EntityPlayer)event.getEntity();
-				//net.minecraft.item.Item heldItem = p.getHeldItemMainhand().getItem();
 				
 //				if (holdingLava(p)) {
 //					addFireResistance(p);
@@ -217,6 +231,17 @@ public class Effects {
 				
 				if (wearingLava(p)) {
 					addFireResistance(p);
+				}
+			}
+		}
+		
+		@SubscribeEvent
+		public static void jumpEvent(LivingJumpEvent event) {
+			Entity e = event.getEntity();
+			if (e instanceof EntityPlayer) {
+				if (InputMappings.isKeyDown(InputMappings.getInputByName("key.keyboard.space").getKeyCode())) {
+					/** maybe at this point just shoot the player up **/
+					spawnLava(event.getEntity().getEntityWorld(), event.getEntity().getPosition(), 2);
 				}
 			}
 		}
