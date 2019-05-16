@@ -1,10 +1,6 @@
 package org.endershawn.lava.block;
 
-import org.endershawn.lava.LavaMod;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;

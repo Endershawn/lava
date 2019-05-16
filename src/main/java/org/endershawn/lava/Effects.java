@@ -106,16 +106,19 @@ public class Effects {
 		worldIn.setBlockState(p, Blocks.LAVA.getDefaultState());
 
 		if (rad > 0) {
-			for (int i = 1; i <= rad; ++i) {
+			for (int i = 1; i <= rad; ++i) {	
 				worldIn.setBlockState(p.add(0, y, 0), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(i, y, 0), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(-i, y, 0), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(0, y, i), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(0, y, -i), Blocks.LAVA.getDefaultState());
-				worldIn.setBlockState(p.add(i, y, i), Blocks.LAVA.getDefaultState());
-				worldIn.setBlockState(p.add(i, y, -i), Blocks.LAVA.getDefaultState());
-				worldIn.setBlockState(p.add(-i, y, i), Blocks.LAVA.getDefaultState());
-				worldIn.setBlockState(p.add(-i, y, -i), Blocks.LAVA.getDefaultState());
+				
+				if (i < rad) {
+					worldIn.setBlockState(p.add(i, y, i), Blocks.LAVA.getDefaultState());
+					worldIn.setBlockState(p.add(i, y, -i), Blocks.LAVA.getDefaultState());
+					worldIn.setBlockState(p.add(-i, y, i), Blocks.LAVA.getDefaultState());
+					worldIn.setBlockState(p.add(-i, y, -i), Blocks.LAVA.getDefaultState());
+				}
 			}
 
 		}
@@ -195,7 +198,7 @@ public class Effects {
 
 	protected static void lavaJump(EntityPlayer p, float level) {
 		p.addVelocity(0, level, 0);
-		Effects.spawnLava(p.getEntityWorld(), p.getPosition(), (int)(level - (level / 2)));
+		Effects.spawnLava(p.getEntityWorld(), p.getPosition(), 2);
 	}
 
 	protected static void activateModifier(EntityPlayer p, IAttribute a, AttributeModifier m) {
