@@ -13,4 +13,5 @@ public class ItemLavaChestplate extends ItemArmor {
 				new Item.Properties().group(ItemGroup.COMBAT));
 		setRegistryName(LavaMod.MODID, "lava_chestplate");
 	}
+
 }

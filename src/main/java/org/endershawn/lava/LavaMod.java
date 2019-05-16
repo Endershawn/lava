@@ -1,12 +1,10 @@
 package org.endershawn.lava;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-
-import java.lang.reflect.Field;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LavaMod.MODID)
@@ -15,7 +13,6 @@ public class LavaMod
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "lava";
-    public static Field keyBinds;
 
     public LavaMod() {
         // Register the setup method for modloading
