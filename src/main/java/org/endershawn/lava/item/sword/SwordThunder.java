@@ -19,7 +19,7 @@ public class SwordThunder extends SwordBase {
 	private static final double REACH_MULT = 6;
 	private static final float BLAST_SIZE = 6;
 	
-	private static IItemTier tier = ModItems.lightningTier;
+	private static IItemTier tier = ModItems.itemTierLightning;
 	private static Item.Properties props = new Item.Properties()
 			.group(ItemGroup.COMBAT);
 	

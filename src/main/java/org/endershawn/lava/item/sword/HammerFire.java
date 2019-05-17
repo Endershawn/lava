@@ -22,7 +22,7 @@ public class HammerFire extends SwordBase {
 	private static final double REACH_MULT = 32;
 	private static final int TEMPERATURE = 10;
 	
-	private static IItemTier tier = ModItems.lavaTier;
+	private static IItemTier tier = ModItems.itemTierLava;
 	private static Item.Properties props = new Item.Properties()
 			.group(ItemGroup.COMBAT);
 		

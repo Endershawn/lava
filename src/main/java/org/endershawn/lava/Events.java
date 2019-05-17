@@ -1,14 +1,11 @@
 package org.endershawn.lava;
 
-import org.endershawn.lava.Effects;
-
 import net.minecraft.block.state.BlockState;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,18 +33,6 @@ public class Events {
 	}
 
 	@SubscribeEvent
-	public static void equipChange(LivingEquipmentChangeEvent event) {
-
-//		if (event.getEntity() instanceof EntityPlayer) {
-//			EntityPlayer p = (EntityPlayer) event.getEntity();
-//
-//			if (Effects.wearingLava(p)) {
-//				Effects.addFireResistance(p);
-//			}
-//		}
-	}
-
-	@SubscribeEvent
 	public static void tryLavaJump(LivingJumpEvent event) {
 		Entity e = event.getEntity();
 		if (e instanceof EntityPlayer) {
@@ -60,29 +45,22 @@ public class Events {
 	@SubscribeEvent
 	public static void livingHurt(LivingHurtEvent event) {
 		if (event.getEntity() instanceof EntityPlayer) {
-			EntityPlayer p = (EntityPlayer) event.getEntity();
-
-			System.out.print("we got hurt by " + event.getSource().getDamageType());
-
-			if (Effects.wearingLava(p)) {
-
-				System.out.print(", we are wearing lava");
+			if (Effects.wearingLava((EntityPlayer) event.getEntity())) {
 				cancelLavaFall(event);
-
 //				cancelFire(event);
-
+				event.setCanceled(true);
 			}
-
-			System.out.println("!");
 		}
 	}
 
 	private static void cancelLavaFall(LivingHurtEvent event) {
-		BlockState bs = (BlockState) event.getEntity().getEntityWorld().getBlockState(event.getEntity().getPosition());
+		BlockState bs = (BlockState) event.getEntity()
+				.getEntityWorld()
+				.getBlockState(
+						event.getEntity()
+						.getPosition());
 
 		if (bs == Blocks.LAVA.getDefaultState()) {
-			System.out.print(", we are in lava");
-
 			if (event.getSource() == DamageSource.FALL) {
 				event.setAmount(0);
 				event.setCanceled(true);
@@ -93,12 +71,11 @@ public class Events {
 	private static void cancelFire(LivingHurtEvent event) {
 		DamageSource source = event.getSource();
 
-		if (source == DamageSource.ON_FIRE || source == DamageSource.IN_FIRE || source == DamageSource.LAVA) {
-			System.out.print(", we are burning");
-
+		if (source == DamageSource.ON_FIRE || 
+				source == DamageSource.IN_FIRE || 
+				source == DamageSource.LAVA) {
 			event.setAmount(0);
 			event.setCanceled(true);
-
 		}
 	}
 

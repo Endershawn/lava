@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.endershawn.lava.entity.EntitySuperFireball;
 import org.endershawn.lava.item.LavaTier;
+import org.endershawn.lava.item.ModItems;
 import org.endershawn.lava.item.armor.ArmorMaterialLava;
 
 import net.minecraft.block.Block;
@@ -21,6 +22,9 @@ import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.IItemTier;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemTiered;
 import net.minecraft.potion.Potion;
@@ -35,8 +39,8 @@ import net.minecraft.world.World;
 
 public class Effects {
 	private static int TICKS = 20;
-	protected static final int EFFECT_DURATION = 5 * TICKS;
 	private static final int JUMP_LEVEL = 3;
+	protected static final int EFFECT_DURATION = 5 * TICKS;
 	protected static final AttributeModifier INC_SWIM_SPEED = new AttributeModifier("lava.inc_swimspeed", 6, 0);
 
 	public static interface IAffectEntity {
@@ -106,13 +110,13 @@ public class Effects {
 		worldIn.setBlockState(p, Blocks.LAVA.getDefaultState());
 
 		if (rad > 0) {
-			for (int i = 1; i <= rad; ++i) {	
+			for (int i = 1; i <= rad; ++i) {
 				worldIn.setBlockState(p.add(0, y, 0), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(i, y, 0), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(-i, y, 0), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(0, y, i), Blocks.LAVA.getDefaultState());
 				worldIn.setBlockState(p.add(0, y, -i), Blocks.LAVA.getDefaultState());
-				
+
 				if (i < rad) {
 					worldIn.setBlockState(p.add(i, y, i), Blocks.LAVA.getDefaultState());
 					worldIn.setBlockState(p.add(i, y, -i), Blocks.LAVA.getDefaultState());
@@ -155,23 +159,42 @@ public class Effects {
 		return false;
 	}
 
-	/** abstract to isHolding(tier) **/
 	private static boolean holdingLava(EntityPlayer p) {
-		return isLava(p.getHeldItemMainhand().getItem()) || isLava(p.getHeldItemOffhand().getItem());
+		return isHoldingTier(p, ModItems.itemTierLava);
 	}
 
-	/** abstract to isWearing(armorMaterial) **/
+	private static boolean isTier(Item i, IItemTier tier) {
+		if (i instanceof ItemTiered) {
+			return (((ItemTiered) i).getTier() instanceof LavaTier);
+		}
+
+		return false;
+	}
+
+	private static boolean isHoldingTier(EntityPlayer p, IItemTier tier) {
+		Item main = p.getHeldItemMainhand().getItem();
+		Item off = p.getHeldItemOffhand().getItem();
+
+		return (isTier(main, tier) || isTier(off, tier));
+	}
+
 	static boolean wearingLava(EntityPlayer p) {
+		return isWearing(p, ModItems.armorMaterialLava);
+	}
+
+	public static boolean isWearing(EntityPlayer p, IArmorMaterial m) {
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 			if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
-				net.minecraft.item.Item i = p.getItemStackFromSlot(slot).getItem();
-				if (!isLava(i)) {
-					return false;
+				Item i = p.getItemStackFromSlot(slot).getItem();
+				if (i instanceof ItemArmor) {
+					ItemArmor ia = (ItemArmor) i;
+					if (!(ia.getArmorMaterial().getClass().equals(m.getClass()))) {
+						return false;
+					}
 				}
 			}
 		}
-
-		return true;
+		return false;
 	}
 
 	private static void addEffect(Potion potion, EntityPlayer p) {
@@ -185,7 +208,6 @@ public class Effects {
 	static void addFireResistance(EntityPlayer p) {
 		addEffect(MobEffects.FIRE_RESISTANCE, p);
 		p.extinguish();
-
 	}
 
 	private static void addJumpBoost(EntityPlayer p, int level) {

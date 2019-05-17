@@ -15,12 +15,12 @@ import net.minecraft.world.World;
 
 public class SwordLava extends SwordBase {	
 	private static final int BLAST_SIZE = 1;
-	private static IItemTier tier = ModItems.lavaTier;
+	private static IItemTier tier = ModItems.itemTierLava;
 	private static Item.Properties props = new Item.Properties()
 			.group(ItemGroup.COMBAT);
 	
 	public SwordLava() {
-		super("sword_lava", ModItems.lavaTier, props, 0, tier.getAttackDamage());
+		super("sword_lava", ModItems.itemTierLava, props, 0, tier.getAttackDamage());
 	}
 		
 	@Override
