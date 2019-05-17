@@ -186,15 +186,13 @@ public class Effects {
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 			if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
 				Item i = p.getItemStackFromSlot(slot).getItem();
-				if (i instanceof ItemArmor) {
-					ItemArmor ia = (ItemArmor) i;
-					if (!(ia.getArmorMaterial().getClass().equals(m.getClass()))) {
-						return false;
-					}
+				if (!(i instanceof ItemArmor)) {return false;}
+				if (!((ItemArmor)i).getArmorMaterial().getClass().equals(m.getClass())) {
+					return false;
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	private static void addEffect(Potion potion, EntityPlayer p) {
