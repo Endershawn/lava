@@ -33,13 +33,17 @@ public class ModItems {
 	public static final IItemTier itemTierLightning = new LightningTier();
 	public static final IArmorMaterial armorMaterialLava = new ArmorMaterialLava();
 	
+	public static final SwordLava swordLava = new SwordLava();
+	public static final SwordThunder swordThunder = new SwordThunder();
+	public static final HammerFire hammerFire = new HammerFire();
+	
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
     	LOGGER.info("Registering Items");
         event.getRegistry().registerAll(
-        		new SwordThunder(),
-        		new SwordLava(),
-        		new HammerFire(),
+        		swordThunder,
+        		swordLava,
+        		hammerFire,
         		new Sithe(),
         		new ItemLavaChestplate(),
         		new ItemLavaHelmet(),

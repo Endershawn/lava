@@ -20,7 +20,7 @@ public class LavaTier implements IItemTier {
 	   private final int enchantability;
 	   private final LazyLoadBase<Ingredient> repairMaterial;
 
-	   LavaTier() {
+	   public LavaTier() {
 		  Supplier<Ingredient> i = () -> Ingredient.fromItems(Items.LAVA_BUCKET);
 		  
 	      this.harvestLevel = 2;
