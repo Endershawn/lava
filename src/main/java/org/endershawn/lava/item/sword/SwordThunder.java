@@ -2,8 +2,8 @@ package org.endershawn.lava.item.sword;
 
 import org.endershawn.lava.item.ModItems;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -24,15 +24,15 @@ public class SwordThunder extends SwordBase {
 
 	/** TODO: Move this to an event **/
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		World worldIn = attacker.getEntityWorld();
 
 		if (worldIn.isRemote) {
 			super.hitEntity(stack, target, attacker);
 			target.setHealth(0);
 		} else {
-			worldIn.spawnEntity(
-					new EntityLightningBolt(worldIn, target.posX, 
+			worldIn.addEntity(
+					new LightningBoltEntity(worldIn, target.posX, 
 							                target.posY, target.posZ, true));
 		}
 		return true;

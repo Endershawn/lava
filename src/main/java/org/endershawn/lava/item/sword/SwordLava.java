@@ -3,8 +3,7 @@ package org.endershawn.lava.item.sword;
 import org.endershawn.lava.Effects;
 import org.endershawn.lava.item.ModItems;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -21,8 +20,8 @@ public class SwordLava extends SwordBase {
 	}
 		
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-		Effects.immolateEntity((EntityLiving) target);
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		Effects.immolateEntity((LivingEntity) target);
 		return super.hitEntity(stack, target, attacker);
 	}
 }

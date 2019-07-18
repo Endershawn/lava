@@ -2,49 +2,48 @@ package org.endershawn.lava;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import org.endershawn.lava.entity.EntitySuperFireball;
-import org.endershawn.lava.item.LavaTier;
 import org.endershawn.lava.item.ModItems;
-import org.endershawn.lava.item.armor.ArmorMaterialLava;
 import org.endershawn.lava.item.sword.HammerFire;
 import org.endershawn.lava.item.sword.Sithe;
-import org.endershawn.lava.item.sword.SwordBase;
 import org.endershawn.lava.item.sword.SwordLava;
 import org.endershawn.lava.item.sword.SwordThunder;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemTiered;
+import net.minecraft.item.TieredItem;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.Explosion;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class Effects {
@@ -52,7 +51,7 @@ public class Effects {
 	private static final float JUMP_LEVEL = 2.5f;
 	protected static final int EFFECT_DURATION = 5 * TICKS;
 	protected static final AttributeModifier INC_SWIM_SPEED = 
-			new AttributeModifier("lava.inc_swimspeed", 6, 0);
+			new AttributeModifier("lava.inc_swimspeed", 6, null);
 
 	public static interface IAffectEntity {
 		public void affect(Entity e);
@@ -66,17 +65,17 @@ public class Effects {
 		if (!target.isImmuneToFire()) {
 			target.setFire(10);
 
-			if (target instanceof EntityLiving) {
-				((EntityLiving) target).setHealth(.1f);
+			if (target instanceof LivingEntity) {
+				((LivingEntity) target).setHealth(.1f);
 			}
 		}
 	}
 
-	public static void burnBlocks(World worldIn, BlockPos pos, EnumFacing direction, int range, int temp) {
+	public static void burnBlocks(World worldIn, BlockPos pos, Direction direction, int range, int temp) {
 		if (worldIn.isRemote) {return;}
 		
 		BlockPos toPos = new BlockPos(pos);
-		IBlockState fireState = Blocks.FIRE.getDefaultState();
+		BlockState fireState = Blocks.FIRE.getDefaultState();
 		Random rand = new Random();
 
 		if (direction.getAxis() == Axis.X) {
@@ -87,15 +86,23 @@ public class Effects {
 			pos = pos.add(-(range), 0, 0);
 		}
 
-		Iterable<BlockPos> blocksBox = BlockPos.getAllInBox(pos, toPos.offset(direction, range * 2));
+		Stream<BlockPos> blocksBox = BlockPos.getAllInBox(pos, toPos.offset(direction, range * 2));
 
-		for (BlockPos p : blocksBox) {
+		blocksBox.filter(null).forEach(p -> {
 			Block b = worldIn.getBlockState(p).getBlock();
 
 			if (rand.nextInt(100) < temp && b != Blocks.AIR) {
 				worldIn.setBlockState(p, fireState);
 			}
-		}
+		});
+		
+//		for (BlockPos p : blocksBox) {
+//			Block b = worldIn.getBlockState(p).getBlock();
+//
+//			if (rand.nextInt(100) < temp && b != Blocks.AIR) {
+//				worldIn.setBlockState(p, fireState);
+//			}
+//		}
 	}
 
 	public static void immolateRange(World worldIn, Vec3d v, float range) {
@@ -108,10 +115,10 @@ public class Effects {
 
 	public static void dropFireball(World worldIn, BlockPos p) {
 		if (!worldIn.isRemote) {
-			EntityLargeFireball fb = new EntitySuperFireball(worldIn);
+			FireballEntity fb = new EntitySuperFireball(worldIn);
 			fb.setPosition(p.getX(), worldIn.getActualHeight(), p.getZ());
 			fb.accelerationY -= .3;
-			worldIn.spawnEntity(fb);
+			worldIn.addEntity(fb);
 		}
 	}
 
@@ -126,7 +133,24 @@ public class Effects {
 					pos.getY(), 
 					pos.getZ(), 
 					SwordLava.BLAST_SIZE, 
-					true);
+					true,
+					Explosion.Mode.DESTROY);
+			Effects.spawnLava(worldIn, pos, SwordLava.BLAST_SIZE);
+		}
+	}
+	
+	public static void spawnLavaAtVec(World worldIn, BlockPos pos) {
+		if (worldIn.isRemote) {return;}
+		
+		if (SwordLava.BLAST_SIZE > 0 && ModItems.swordLava.canDestroy(worldIn.getBlockState(pos))) {
+			worldIn.createExplosion(
+					null, 
+					pos.getX(), 
+					pos.getY(), 
+					pos.getZ(), 
+					SwordLava.BLAST_SIZE, 
+					true,
+					Explosion.Mode.DESTROY);
 			Effects.spawnLava(worldIn, pos, SwordLava.BLAST_SIZE);
 		}
 	}
@@ -168,11 +192,11 @@ public class Effects {
 		return entities;
 	}
 
-	public static void lightningStrike(World worldIn, EntityPlayer player, BlockPos hitPos, Float size) {
+	public static void lightningStrike(World worldIn, PlayerEntity player, BlockPos hitPos, Float size) {
 
 		if (worldIn.isRemote) {
-			worldIn.spawnEntity(
-					new EntityLightningBolt(
+			worldIn.addEntity(
+					new LightningBoltEntity(
 							worldIn, 
 							hitPos.getX(), 
 							hitPos.getY(), 
@@ -181,11 +205,12 @@ public class Effects {
 		} else {
 			worldIn.createExplosion(
 					player, 
-					hitPos.getX(), 
+					null, hitPos.getX(), 
 					hitPos.getY(), 
 					hitPos.getZ(), 
 					size, 
-					true);
+					true, 
+					Explosion.Mode.DESTROY);
 			
 			for (Entity e : Effects.scanForEntites(worldIn, new Vec3d(hitPos), size)) {
 				e.attackEntityFrom(DamageSource.LIGHTNING_BOLT, size * 2);
@@ -193,11 +218,11 @@ public class Effects {
 		}
 	}
 	
-	public static void lightningStrike(World worldIn, EntityPlayer player, Vec3d hitVec, Float size) {
+	public static void lightningStrike(World worldIn, PlayerEntity player, Vec3d hitVec, Float size) {
 		lightningStrike(worldIn, player, new BlockPos(hitVec), size);
 	}
 
-	public static void lightningStrikeCrosshair(EntityPlayer player) {
+	public static void lightningStrikeCrosshair(PlayerEntity player) {
 		World world = player.getEntityWorld();
 		
 		RayTraceResult rtr = Effects.rayTrace(
@@ -207,80 +232,88 @@ public class Effects {
 				SwordThunder.REACH_MULT);
 	
 		if (rtr != null) {
-			if (rtr.type != RayTraceResult.Type.MISS) {
+			if (rtr.getType() != RayTraceResult.Type.MISS) {
 					Effects.lightningStrike(
 							world, 
 							player, 
-							rtr.getBlockPos(), 
+							rtr.getHitVec(), 
 							SwordThunder.BLAST_SIZE);
 					}
 		}
 	}
 	
-	public static void fireballCrosshair(EntityPlayer player) {
+	public static void fireballCrosshair(PlayerEntity player) {
 		World worldIn = player.getEntityWorld();
 		RayTraceResult rtr = Effects.rayTrace(worldIn, player, true, HammerFire.REACH_MULT);
 		
-		if (rtr != null && rtr.type != RayTraceResult.Type.MISS) {
-			    Effects.dropFireball(worldIn, rtr.getBlockPos());
+		if (rtr != null && rtr.getType() != RayTraceResult.Type.MISS) {
+			    Effects.dropFireball(worldIn, new BlockPos(rtr.getHitVec()));
 		}
 	}
 	
-	public static void immolateCrosshair(EntityPlayer player) {
+	public static void immolateCrosshair(PlayerEntity player) {
 		World worldIn = player.getEntityWorld();
 		
 		RayTraceResult rtr = Effects.rayTrace(worldIn, player, true, Sithe.REACH_MULT);
-		Effects.immolateRange(worldIn, rtr.hitVec, 1f);
+		Effects.immolateRange(worldIn, rtr.getHitVec(), 1f);
 	}
 	
-	public static void burnTargetArea(EntityPlayer player, Vec3d area) {
+	public static void burnTargetArea(PlayerEntity player, Vec3d area) {
 		World worldIn = player.getEntityWorld();
-		EnumFacing facing = player.getHorizontalFacing();
+		Direction facing = player.getHorizontalFacing();
 		BlockPos target = new BlockPos(area);
 		
 		Effects.burnBlocks(worldIn, target, facing, HammerFire.BLAST_SIZE, HammerFire.TEMPERATURE);
 	}
 	
-	private static boolean isLava(Item i) {
-		if (i instanceof ItemTiered) {
-			ItemTiered it = (ItemTiered) i;
-			return (it.getTier() instanceof LavaTier);
-		}
-
-		if (i instanceof ItemArmor) {
-			ItemArmor ia = (ItemArmor) i;
-			return (ia.getArmorMaterial() instanceof ArmorMaterialLava);
-		}
-
-		return false;
+	public static void burnTargetArea(PlayerEntity player, BlockPos pos) {
+		World worldIn = player.getEntityWorld();
+		Direction facing = player.getHorizontalFacing();
+		BlockPos target = pos;
+		
+		Effects.burnBlocks(worldIn, target, facing, HammerFire.BLAST_SIZE, HammerFire.TEMPERATURE);
 	}
+	
+//	private static boolean isLava(Item i) {
+//		if (i instanceof ItemTiered) {
+//			ItemTiered it = (ItemTiered) i;
+//			return (it.getTier() instanceof LavaTier);
+//		}
+//
+//		if (i instanceof ItemArmor) {
+//			ItemArmor ia = (ItemArmor) i;
+//			return (ia.getArmorMaterial() instanceof ArmorMaterialLava);
+//		}
+//
+//		return false;
+//	}
 
 	private static boolean isTier(Item i, IItemTier tier) {
-		if (i instanceof ItemTiered) {
-			ItemTiered it = (ItemTiered)i;
+		if (i instanceof TieredItem) {
+			TieredItem it = (TieredItem)i;
 			return (it.getTier().getClass().equals(tier.getClass()));
 		}
 
 		return false;
 	}
 
-	static boolean isHoldingTier(EntityPlayer p, IItemTier tier) {
+	static boolean isHoldingTier(PlayerEntity p, IItemTier tier) {
 		Item main = p.getHeldItemMainhand().getItem();
 		Item off = p.getHeldItemOffhand().getItem();
 
 		return (isTier(main, tier) || isTier(off, tier));
 	}
 
-	static boolean wearingLava(EntityPlayer p) {
+	static boolean wearingLava(PlayerEntity p) {
 		return isWearing(p, ModItems.armorMaterialLava);
 	}
 
-	public static boolean isWearing(EntityPlayer p, IArmorMaterial m) {
-		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-			if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+	public static boolean isWearing(PlayerEntity p, IArmorMaterial m) {
+		for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+			if (slot.getSlotType() == EquipmentSlotType.Group.ARMOR) {
 				Item i = p.getItemStackFromSlot(slot).getItem();
-				if (!(i instanceof ItemArmor)) {return false;}
-				if (!((ItemArmor)i).getArmorMaterial().getClass().equals(m.getClass())) {
+				if (!(i instanceof ArmorItem)) {return false;}
+				if (!((ArmorItem)i).getArmorMaterial().getClass().equals(m.getClass())) {
 					return false;
 				}
 			}
@@ -288,28 +321,28 @@ public class Effects {
 		return true;
 	}
 
-	private static void addEffect(Potion potion, EntityPlayer p) {
-		addEffect(potion, p, 100);
+	private static void addEffect(EffectInstance e, PlayerEntity p) {
+		addEffect(e, p, 100);
 	}
 
-	private static void addEffect(Potion potion, EntityPlayer p, int level) {
-		p.addPotionEffect(new PotionEffect(potion, EFFECT_DURATION + TICKS, level));
+	private static void addEffect(EffectInstance e, PlayerEntity p, int level) {
+		p.addPotionEffect(new EffectInstance(e.getPotion(), EFFECT_DURATION + TICKS, level));
 	}
 
-	static void addFireResistance(EntityPlayer p) {
-		addEffect(MobEffects.FIRE_RESISTANCE, p);
+	static void addFireResistance(PlayerEntity p) {
+		addEffect(new EffectInstance(net.minecraft.potion.Effects.FIRE_RESISTANCE), p);
 		p.extinguish();
 	}
-	protected static void lavaJump(EntityPlayer p) {
+	protected static void lavaJump(PlayerEntity p) {
 		lavaJump(p, JUMP_LEVEL);
 	}
 
-	protected static void lavaJump(EntityPlayer p, float level) {		
+	protected static void lavaJump(PlayerEntity p, float level) {		
 		p.addVelocity(0, level, 0);
 		Effects.spawnLava(p.getEntityWorld(), p.getPosition(), 3);
 	}
 
-	protected static void activateModifier(EntityPlayer p, IAttribute a, AttributeModifier m) {
+	protected static void activateModifier(PlayerEntity p, IAttribute a, AttributeModifier m) {
 		IAttributeInstance i = p.getAttribute(a);
 
 		if (!i.hasModifier(m)) {
@@ -317,20 +350,22 @@ public class Effects {
 		}
 	}
 
-	protected static void deactivateModifier(EntityPlayer p, IAttribute a, AttributeModifier m) {
+	protected static void deactivateModifier(PlayerEntity p, IAttribute a, AttributeModifier m) {
 		IAttributeInstance i = p.getAttribute(a);
-
-		if (i.hasModifier(m)) {
-			i.removeModifier(m);
+		
+		for (AttributeModifier mod : i.getModifiers()) {
+			if (mod == m) {
+				i.removeModifier(mod);
+			}
 		}
 	}
 
-	protected static void increaseSwimSpeed(EntityPlayer p) {
-		Effects.activateModifier(p, EntityLivingBase.SWIM_SPEED, Effects.INC_SWIM_SPEED);
+	protected static void increaseSwimSpeed(PlayerEntity p) {
+		Effects.activateModifier(p, LivingEntity.SWIM_SPEED, Effects.INC_SWIM_SPEED);
 	}
 
-	protected static void resetSwimSpeed(EntityPlayer p) {
-		Effects.deactivateModifier(p, EntityLivingBase.SWIM_SPEED, Effects.INC_SWIM_SPEED);
+	protected static void resetSwimSpeed(PlayerEntity p) {
+		Effects.deactivateModifier(p, LivingEntity.SWIM_SPEED, Effects.INC_SWIM_SPEED);
 	}
 	
 	protected static void cancelLavaFall(LivingHurtEvent event) {
@@ -360,10 +395,10 @@ public class Effects {
 	}
 
 	protected static boolean isKeyDown(String keyName) {
-		return InputMappings.isKeyDown(InputMappings.getInputByName(keyName).getKeyCode());
+		return InputMappings.isKeyDown(InputMappings.getInputByName(keyName).getKeyCode(), 0);
 	}
 	
-	public static RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids, double dM)
+	public static RayTraceResult rayTrace(World worldIn, PlayerEntity playerIn, boolean useLiquids, double dM)
     {
         float f = playerIn.rotationPitch;
         float f1 = playerIn.rotationYaw;
@@ -377,8 +412,10 @@ public class Effects {
         float f5 = MathHelper.sin(-f * 0.017453292F);
         float f6 = f3 * f4;
         float f7 = f2 * f4;
-        double d3 = playerIn.getAttribute(EntityPlayer.REACH_DISTANCE).getValue() * dM;
+        double d3 = playerIn.getAttribute(PlayerEntity.REACH_DISTANCE).getValue() * dM;
         Vec3d vec3d1 = vec3d.add((double)f6 * d3, (double)f5 * d3, (double)f7 * d3);
-        return worldIn.rayTraceBlocks(vec3d, vec3d1);
+                
+        RayTraceContext rtc = new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, playerIn);
+        return worldIn.rayTraceBlocks(rtc);
     }
 }

@@ -2,7 +2,7 @@ package org.endershawn.lava.item.sword;
 
 import org.endershawn.lava.item.ModItems;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -23,8 +23,8 @@ public class HammerFire extends SwordBase {
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, 
-							 EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, LivingEntity target, 
+			LivingEntity attacker) {
 	
 		if (!target.isImmuneToFire()) {
 			target.setFire(BURN_TIME);

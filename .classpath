@@ -29,16 +29,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
-	<classpathentry exported="true" kind="lib" path="/home/someone/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.13.2-25.0.191_mapped_snapshot_20180921-1.13/forge-1.13.2-25.0.191_mapped_snapshot_20180921-1.13-recomp.jar" sourcepath="/home/someone/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.13.2-25.0.191_mapped_snapshot_20180921-1.13/forge-1.13.2-25.0.191_mapped_snapshot_20180921-1.13-sources.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/home/someone/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.13.2-25.0.191_mapped_snapshot_20180921-1.13/forge-1.13.2-25.0.191_mapped_snapshot_20180921-1.13-launcher.jar" sourcepath="/home/someone/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.13.2-25.0.191_mapped_snapshot_20180921-1.13/forge-1.13.2-25.0.191_mapped_snapshot_20180921-1.13-sources.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="/home/someone/.gradle/caches/forge_gradle/minecraft_repo/versions/1.13.2/client-extra.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
@@ -404,5 +394,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/someone/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.14.2-26.0.63_mapped_snapshot_20190621-1.14.2/forge-1.14.2-26.0.63_mapped_snapshot_20190621-1.14.2-recomp.jar"/>
+	<classpathentry kind="lib" path="/home/someone/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.14.2-26.0.63_mapped_snapshot_20190621-1.14.2/forge-1.14.2-26.0.63_mapped_snapshot_20190621-1.14.2-launcher.jar"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

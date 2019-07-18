@@ -40,15 +40,17 @@ public class ModItems {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
     	LOGGER.info("Registering Items");
-        event.getRegistry().registerAll(
-        		swordThunder,
-        		swordLava,
-        		hammerFire,
-        		new Sithe(),
-        		new ItemLavaChestplate(),
-        		new ItemLavaHelmet(),
-        		new ItemLavaBoots(),
-        		new ItemLavaLeggings()
-		);
+    	event.getRegistry().register(swordThunder);
+    	
+//        event.getRegistry().registerAll(
+//        		swordThunder,
+//        		swordLava,
+//        		hammerFire,
+//        		new Sithe(),
+//        		new ItemLavaChestplate(),
+//        		new ItemLavaHelmet(),
+//        		new ItemLavaBoots(),
+//        		new ItemLavaLeggings()
+//		);
     }
 }

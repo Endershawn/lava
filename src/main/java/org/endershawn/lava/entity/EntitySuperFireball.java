@@ -3,15 +3,16 @@ package org.endershawn.lava.entity;
 import org.endershawn.lava.Effects;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class EntitySuperFireball extends EntityLargeFireball {
+public class EntitySuperFireball extends FireballEntity {
 	public float POWER = 2f;
 	
 	public EntitySuperFireball(World worldIn) {
-		super(worldIn);
+		super(null, worldIn);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -19,12 +20,12 @@ public class EntitySuperFireball extends EntityLargeFireball {
     {
         if (!this.world.isRemote)
         {
-        	Effects.immolateRange(world, result.hitVec, (float) (POWER * 1.5));
+        	Effects.immolateRange(world, result.getHitVec(), (float) (POWER * 1.5));
 
             // boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
-            boolean flag = true;
+            Explosion.Mode flag = Explosion.Mode.DESTROY;
 
-            this.world.newExplosion((Entity)null, this.posX, this.posY, this.posZ, this.POWER, flag, flag);
+            this.world.createExplosion((Entity)null, this.posX, this.posY, this.posZ, this.POWER, flag);
             this.remove();
         }
     }

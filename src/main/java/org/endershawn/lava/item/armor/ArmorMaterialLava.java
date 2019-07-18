@@ -1,12 +1,11 @@
 package org.endershawn.lava.item.armor;
 
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyLoadBase;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,17 +26,9 @@ public class ArmorMaterialLava implements IArmorMaterial {
 		this.enchantability = 10;
 		this.soundEvent = SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
 		this.toughness = 2;
-		this.repairMaterial = new LazyLoadBase<>(() -> {
-			return Ingredient.fromItems(Items.LAVA_BUCKET);
-		});
-	}
-
-	public int getDurability(EntityEquipmentSlot slotIn) {
-		return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
-	}
-
-	public int getDamageReductionAmount(EntityEquipmentSlot slotIn) {
-		return this.damageReductionAmountArray[slotIn.getIndex()];
+//		this.repairMaterial = new LazyLoadBase<>(() -> {
+//			return Ingredient.fromItems(Items.LAVA_BUCKET);
+//		});
 	}
 
 	public int getEnchantability() {
@@ -59,6 +50,18 @@ public class ArmorMaterialLava implements IArmorMaterial {
 
 	public float getToughness() {
 		return this.toughness;
+	}
+
+	@Override
+	public int getDamageReductionAmount(EquipmentSlotType arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDurability(EquipmentSlotType arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
