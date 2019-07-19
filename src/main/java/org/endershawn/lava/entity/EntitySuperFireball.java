@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 public class EntitySuperFireball extends FireballEntity {
 	public float POWER = 2f;
 	
-	public EntitySuperFireball(World worldIn) {
-		super(null, worldIn);
+	public EntitySuperFireball(World worldIn, double x, double y, double z, double accelX, double accelY, double accelZ) {
+		super(worldIn, x, y, z, accelX, accelY, accelZ);
 		// TODO Auto-generated constructor stub
 	}
 

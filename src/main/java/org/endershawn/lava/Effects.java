@@ -1,9 +1,11 @@
 package org.endershawn.lava;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
 import org.endershawn.lava.entity.EntitySuperFireball;
 import org.endershawn.lava.item.ModItems;
 import org.endershawn.lava.item.sword.HammerFire;
@@ -15,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -22,20 +25,18 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.item.TieredItem;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -44,11 +45,17 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
+
+// TODO: refactor lightning
 
 public class Effects {
 	private static int TICKS = 20;
 	private static final float JUMP_LEVEL = 2.5f;
+	private static final float FIREBALL_ACC = -0.001f;
 	protected static final int EFFECT_DURATION = 5 * TICKS;
 	protected static final AttributeModifier INC_SWIM_SPEED = 
 			new AttributeModifier("lava.inc_swimspeed", 6, null);
@@ -88,21 +95,13 @@ public class Effects {
 
 		Stream<BlockPos> blocksBox = BlockPos.getAllInBox(pos, toPos.offset(direction, range * 2));
 
-		blocksBox.filter(null).forEach(p -> {
+		blocksBox.forEach(p -> {
 			Block b = worldIn.getBlockState(p).getBlock();
 
 			if (rand.nextInt(100) < temp && b != Blocks.AIR) {
 				worldIn.setBlockState(p, fireState);
 			}
 		});
-		
-//		for (BlockPos p : blocksBox) {
-//			Block b = worldIn.getBlockState(p).getBlock();
-//
-//			if (rand.nextInt(100) < temp && b != Blocks.AIR) {
-//				worldIn.setBlockState(p, fireState);
-//			}
-//		}
 	}
 
 	public static void immolateRange(World worldIn, Vec3d v, float range) {
@@ -113,12 +112,33 @@ public class Effects {
 		}
 	}
 
+	public static void spawnClientSide(Entity e) {
+		Optional<ClientWorld> ocw = LogicalSidedProvider.CLIENTWORLD.get(LogicalSide.CLIENT);
+		
+		if (ocw.isPresent()) {			
+			ClientWorld cw = ocw.get();
+			
+			if (e instanceof LightningBoltEntity) {
+				cw.addLightning((LightningBoltEntity)e);
+			} else {
+				cw.addEntity(e.getEntityId(), e);
+			}
+		}
+	}
+	
 	public static void dropFireball(World worldIn, BlockPos p) {
-		if (!worldIn.isRemote) {
-			FireballEntity fb = new EntitySuperFireball(worldIn);
-			fb.setPosition(p.getX(), worldIn.getActualHeight(), p.getZ());
-			fb.accelerationY -= .3;
-			worldIn.addEntity(fb);
+		if (!worldIn.isRemote) {			
+			spawnClientSide(new EntitySuperFireball(
+					worldIn, 
+					p.getX(), 
+					worldIn.getActualHeight() / 2, 
+					p.getZ(), 
+					0, 
+					FIREBALL_ACC, 
+					0
+			));
+		} else {
+
 		}
 	}
 
@@ -186,31 +206,48 @@ public class Effects {
 	}
 
 	public static List<Entity> scanForEntites(World worldIn, Vec3d vec, Float range) {
-		AxisAlignedBB scanBB = new AxisAlignedBB(vec.add(-range, -range, -range), vec.add(range, range, range));
+		AxisAlignedBB scanBB = new AxisAlignedBB(
+				vec.add(-range, -range, -range), 
+				vec.add(range, range, range));
 
 		List<Entity> entities = worldIn.getEntitiesWithinAABB(Entity.class, scanBB);
 		return entities;
 	}
 
 	public static void lightningStrike(World worldIn, PlayerEntity player, BlockPos hitPos, Float size) {
-
-		if (worldIn.isRemote) {
-			worldIn.addEntity(
-					new LightningBoltEntity(
-							worldIn, 
-							hitPos.getX(), 
-							hitPos.getY(), 
-							hitPos.getZ(), 
-							true));
-		} else {
+		worldIn.playSound(
+				player, 
+				hitPos, 
+				SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, 
+				SoundCategory.WEATHER, 
+				10f, 
+				1f);
+		
+		worldIn.playSound(
+				player, 
+				hitPos, 
+				SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, 
+				SoundCategory.WEATHER, 
+				10f, 
+				1f);
+		
+		if (!worldIn.isRemote) {
 			worldIn.createExplosion(
 					player, 
-					null, hitPos.getX(), 
+					null,
+					hitPos.getX(), 
 					hitPos.getY(), 
 					hitPos.getZ(), 
 					size, 
 					true, 
 					Explosion.Mode.DESTROY);
+		} else {
+			spawnClientSide(new LightningBoltEntity(
+					worldIn, 
+					hitPos.getX(), 
+					hitPos.getY(), 
+					hitPos.getZ(), 
+					true));
 			
 			for (Entity e : Effects.scanForEntites(worldIn, new Vec3d(hitPos), size)) {
 				e.attackEntityFrom(DamageSource.LIGHTNING_BOLT, size * 2);
@@ -230,7 +267,7 @@ public class Effects {
 				player, 
 				true, 
 				SwordThunder.REACH_MULT);
-	
+		
 		if (rtr != null) {
 			if (rtr.getType() != RayTraceResult.Type.MISS) {
 					Effects.lightningStrike(
