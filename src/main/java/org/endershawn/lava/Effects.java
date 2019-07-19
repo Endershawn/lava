@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
 import org.endershawn.lava.entity.EntitySuperFireball;
 import org.endershawn.lava.item.ModItems;
 import org.endershawn.lava.item.sword.HammerFire;
@@ -16,7 +15,6 @@ import org.endershawn.lava.item.sword.SwordThunder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +43,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.Explosion;
-import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
@@ -431,10 +428,6 @@ public class Effects {
 		}
 	}
 
-	protected static boolean isKeyDown(String keyName) {
-		return InputMappings.isKeyDown(InputMappings.getInputByName(keyName).getKeyCode(), 0);
-	}
-	
 	public static RayTraceResult rayTrace(World worldIn, PlayerEntity playerIn, boolean useLiquids, double dM)
     {
         float f = playerIn.rotationPitch;

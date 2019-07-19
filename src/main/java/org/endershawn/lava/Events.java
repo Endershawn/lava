@@ -5,6 +5,7 @@ import org.endershawn.lava.item.sword.Sithe;
 import org.endershawn.lava.item.sword.SwordLava;
 import org.endershawn.lava.item.sword.SwordThunder;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -25,9 +26,9 @@ public class Events {
 		if (event.player.world.getGameTime() % Effects.EFFECT_DURATION > 0) {
 			if (Effects.wearingLava(event.player)) {
 				if (event.player.isInLava()) {
-					Effects.increaseSwimSpeed(event.player);
+					//Effects.increaseSwimSpeed(event.player);
 				} else {
-					Effects.resetSwimSpeed(event.player);
+					//Effects.resetSwimSpeed(event.player);
 				}
 			}
 		} else {
@@ -41,7 +42,8 @@ public class Events {
 	public static void tryLavaJump(LivingJumpEvent event) {
 		Entity e = event.getEntity();
 		if (e instanceof PlayerEntity) {
-			if (Effects.wearingLava((PlayerEntity) e) && Effects.isKeyDown("key.keyboard.space")) {
+			if (Effects.wearingLava((PlayerEntity) e) && 
+					Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown()) {
 				Effects.lavaJump((PlayerEntity) e);
 			}
 		}

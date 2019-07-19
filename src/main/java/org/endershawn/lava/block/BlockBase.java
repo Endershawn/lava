@@ -2,8 +2,6 @@ package org.endershawn.lava.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 
 public class BlockBase extends Block {
 	
