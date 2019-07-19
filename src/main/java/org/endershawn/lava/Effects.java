@@ -18,6 +18,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -55,8 +56,10 @@ public class Effects {
 	private static final float FIREBALL_ACC = -0.001f;
 	protected static final int EFFECT_DURATION = 5 * TICKS;
 	protected static final AttributeModifier INC_SWIM_SPEED = 
-			new AttributeModifier("lava.inc_swimspeed", 6, null);
-
+			new AttributeModifier("lava.inc_swimspeed", 6, AttributeModifier.Operation.MULTIPLY_BASE).setSaved(false);
+	protected static final AttributeModifier INC_MOVE_SPEED = 
+			new AttributeModifier("lava.inc_movespeed", 6, AttributeModifier.Operation.MULTIPLY_BASE).setSaved(false);
+	
 	public static interface IAffectEntity {
 		public void affect(Entity e);
 	}
@@ -401,6 +404,15 @@ public class Effects {
 	protected static void resetSwimSpeed(PlayerEntity p) {
 		Effects.deactivateModifier(p, LivingEntity.SWIM_SPEED, Effects.INC_SWIM_SPEED);
 	}
+	
+	protected static void increaseMoveSpeed(PlayerEntity p) {
+		Effects.activateModifier(p, SharedMonsterAttributes.MOVEMENT_SPEED, Effects.INC_MOVE_SPEED);
+	}
+
+	protected static void resetMoveSpeed(PlayerEntity p) {
+		Effects.deactivateModifier(p, SharedMonsterAttributes.MOVEMENT_SPEED, Effects.INC_MOVE_SPEED);
+	}
+	
 	
 	protected static void cancelLavaFall(LivingHurtEvent event) {
 		BlockState bs = (BlockState) event.getEntity()

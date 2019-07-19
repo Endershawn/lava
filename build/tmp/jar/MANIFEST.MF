@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: lava
-Implementation-Version: 1.14.2-0.4
+Implementation-Version: 1.14.3-0.4
 Specification-Vendor: examplemodsareus
 Specification-Title: examplemod
-Implementation-Timestamp: 2019-07-18T19:49:59-0700
+Implementation-Timestamp: 2019-07-19T00:24:12-0700
 Specification-Version: 1
 Implementation-Vendor: examplemodsareus
 

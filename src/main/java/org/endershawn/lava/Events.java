@@ -26,9 +26,11 @@ public class Events {
 		if (event.player.world.getGameTime() % Effects.EFFECT_DURATION > 0) {
 			if (Effects.wearingLava(event.player)) {
 				if (event.player.isInLava()) {
-					//Effects.increaseSwimSpeed(event.player);
+					Effects.increaseSwimSpeed(event.player);
+					//Effects.increaseMoveSpeed(event.player);
 				} else {
-					//Effects.resetSwimSpeed(event.player);
+					Effects.resetSwimSpeed(event.player);
+					//Effects.resetMoveSpeed(event.player);
 				}
 			}
 		} else {
