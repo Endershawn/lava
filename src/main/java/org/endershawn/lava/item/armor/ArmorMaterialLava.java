@@ -11,18 +11,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ArmorMaterialLava implements IArmorMaterial {
 	private String name;
-	private int maxDamageFactor;
-	private int[] damageReductionAmountArray;
+//	private int maxDamageFactor;
+//	private int[] damageReductionAmountArray;
 	private int enchantability;
 	private SoundEvent soundEvent;
 	private float toughness;
 	private LazyLoadBase<Ingredient> repairMaterial;
-	private static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
+//	private static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
 
 	public ArmorMaterialLava() {
 		this.name = "lava:lava";
-		this.maxDamageFactor = 33;
-		this.damageReductionAmountArray = new int[] { 3, 6, 8, 3 };
+//		this.maxDamageFactor = 33;
+//		this.damageReductionAmountArray = new int[] { 3, 6, 8, 3 };
 		this.enchantability = 10;
 		this.soundEvent = SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
 		this.toughness = 2;
